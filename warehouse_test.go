@@ -86,6 +86,7 @@ func TestCustomerBuyCD(t *testing.T) {
 
 				assert.Equal(t, 2, foundCd.reviews[0].Rating)
 				assert.Equal(t, "not great", foundCd.reviews[0].Comment)
+				assert.Equal(t, customer.Name, foundCd.reviews[0].CustomerName)
 			})
 		})
 	})

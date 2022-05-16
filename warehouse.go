@@ -16,8 +16,9 @@ type Cd struct {
 }
 
 type CdReview struct {
-	Rating  int
-	Comment string
+	Rating       int
+	Comment      string
+	CustomerName string
 }
 
 func (c *Cd) InStock() bool {
@@ -50,8 +51,9 @@ func (c *Cd) AddReview(customer *Customer, rating int, comment string) bool {
 	}
 
 	review := CdReview{
-		Rating:  rating,
-		Comment: comment,
+		Rating:       rating,
+		Comment:      comment,
+		CustomerName: customer.Name,
 	}
 
 	c.reviews = append(c.reviews, review)

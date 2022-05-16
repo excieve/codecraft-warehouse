@@ -1,7 +1,7 @@
 package cdwarehouse
 
 type Customer struct {
-	name      string
+	Name      string
 	purchases map[string]struct{}
 }
 
@@ -18,7 +18,7 @@ func (c *Customer) HasPurchased(id string) bool {
 
 func NewCustomer(name string) *Customer {
 	return &Customer{
-		name:      name,
+		Name:      name,
 		purchases: map[string]struct{}{},
 	}
 }
