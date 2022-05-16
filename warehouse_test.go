@@ -18,7 +18,7 @@ func TestCustomerBuyCD(t *testing.T) {
 	})
 
 	t.Run("Customer finds one CD with artist 'Foo' and title 'Bar' that's not in stock", func(t *testing.T) {
-		warehouse := NewWarehouse([]Cd{{"Foo", "Bar", 0}})
+		warehouse := NewWarehouse([]Cd{{"Foo", "Bar", 0, []CdReview{}}})
 
 		assert.NotNil(t, warehouse)
 
@@ -41,7 +41,7 @@ func TestCustomerBuyCD(t *testing.T) {
 	})
 
 	t.Run("Customer finds one CD with artist 'Foo' and title 'Bar' that's in stock", func(t *testing.T) {
-		warehouse := NewWarehouse([]Cd{{"Foo", "Bar", 1}})
+		warehouse := NewWarehouse([]Cd{{"Foo", "Bar", 1, []CdReview{}}})
 
 		assert.NotNil(t, warehouse)
 
@@ -68,6 +68,15 @@ func TestCustomerBuyCD(t *testing.T) {
 
 			t.Run("failing to leave a review", func(t *testing.T) {
 				assert.False(t, foundCd.AddReview(15, "terrific"))
+			})
+
+			t.Run("leaving a review successfully", func(t *testing.T) {
+				assert.True(t, foundCd.AddReview(2, "not great"))
+
+				assert.Len(t, foundCd.reviews, 1)
+
+				assert.Equal(t, 2, foundCd.reviews[0].Rating)
+				assert.Equal(t, "not great", foundCd.reviews[0].Comment)
 			})
 		})
 	})

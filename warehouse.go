@@ -3,9 +3,15 @@ package cdwarehouse
 type Warehouse []Cd
 
 type Cd struct {
-	Artist string
-	Title  string
-	stock  int
+	Artist  string
+	Title   string
+	stock   int
+	reviews []CdReview
+}
+
+type CdReview struct {
+	Rating  int
+	Comment string
 }
 
 func (c *Cd) InStock() bool {
@@ -26,7 +32,18 @@ func (c *Cd) Buy(payment Payment) bool {
 }
 
 func (c *Cd) AddReview(rating int, comment string) bool {
-	return false
+	if rating < 1 || rating > 10 {
+		return false
+	}
+
+	review := CdReview{
+		Rating:  rating,
+		Comment: comment,
+	}
+
+	c.reviews = append(c.reviews, review)
+
+	return true
 }
 
 func (w *Warehouse) Search(artist string, title string) []Cd {
