@@ -34,9 +34,10 @@ func TestCustomerBuyCD(t *testing.T) {
 		assert.False(t, foundCd.InStock())
 
 		t.Run("and fails to buy it", func(t *testing.T) {
+			customer := NewCustomer("tester")
 			payment := &SuccessfulPayment{}
 
-			assert.False(t, foundCd.Buy(payment))
+			assert.False(t, foundCd.Buy(customer, payment))
 			assert.False(t, foundCd.InStock())
 		})
 	})
@@ -56,24 +57,30 @@ func TestCustomerBuyCD(t *testing.T) {
 		assert.True(t, foundCd.InStock())
 
 		t.Run("and fails to buy it", func(t *testing.T) {
+			customer := NewCustomer("tester")
 			payment := &FailingPayment{}
 
-			assert.False(t, foundCd.Buy(payment))
+			assert.False(t, foundCd.Buy(customer, payment))
 			assert.True(t, foundCd.InStock())
+
+			t.Run("failing to leave a review", func(t *testing.T) {
+				assert.False(t, foundCd.AddReview(customer, 1, "awful"))
+			})
 		})
 
 		t.Run("and buys it", func(t *testing.T) {
+			customer := NewCustomer("tester")
 			payment := &SuccessfulPayment{}
 
-			assert.True(t, foundCd.Buy(payment))
+			assert.True(t, foundCd.Buy(customer, payment))
 			assert.False(t, foundCd.InStock())
 
 			t.Run("failing to leave a review", func(t *testing.T) {
-				assert.False(t, foundCd.AddReview(15, "terrific"))
+				assert.False(t, foundCd.AddReview(customer, 15, "terrific"))
 			})
 
 			t.Run("leaving a review successfully", func(t *testing.T) {
-				assert.True(t, foundCd.AddReview(2, "not great"))
+				assert.True(t, foundCd.AddReview(customer, 2, "not great"))
 
 				assert.Len(t, foundCd.reviews, 1)
 
