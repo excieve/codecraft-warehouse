@@ -65,11 +65,10 @@ func TestCustomerBuyCD(t *testing.T) {
 
 			assert.True(t, foundCd.Buy(payment))
 			assert.False(t, foundCd.InStock())
+
+			t.Run("failing to leave a review", func(t *testing.T) {
+				assert.False(t, foundCd.AddReview(15, "terrific"))
+			})
 		})
 	})
 }
-
-//
-// func TestCustomerReviewsCD(t *testing.T) {
-//
-// }

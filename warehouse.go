@@ -25,6 +25,10 @@ func (c *Cd) Buy(payment Payment) bool {
 	return false
 }
 
+func (c *Cd) AddReview(rating int, comment string) bool {
+	return false
+}
+
 func (w *Warehouse) Search(artist string, title string) []Cd {
 	var cds = make([]Cd, 0)
 
