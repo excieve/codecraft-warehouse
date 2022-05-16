@@ -5,6 +5,11 @@ type Warehouse []Cd
 type Cd struct {
 	Artist string
 	Title  string
+	stock  int
+}
+
+func (c *Cd) InStock() bool {
+	return c.stock > 0
 }
 
 func (w *Warehouse) Search(artist string, title string) []Cd {
