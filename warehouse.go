@@ -13,6 +13,10 @@ func (c *Cd) InStock() bool {
 }
 
 func (c *Cd) Buy(payment Payment) bool {
+	if c.stock < 1 {
+		return false
+	}
+
 	if payment.IsComplete() {
 		c.stock--
 		return true

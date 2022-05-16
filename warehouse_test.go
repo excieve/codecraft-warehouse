@@ -31,6 +31,13 @@ func TestCustomerBuyCD(t *testing.T) {
 		assert.Equal(t, "Bar", foundCd.Title)
 
 		assert.False(t, foundCd.InStock())
+
+		t.Run("and fails to buy it", func(t *testing.T) {
+			payment := &SuccessfulPayment{}
+
+			assert.False(t, foundCd.Buy(payment))
+			assert.False(t, foundCd.InStock())
+		})
 	})
 
 	t.Run("Customer finds one CD with artist 'Foo' and title 'Bar' that's in stock", func(t *testing.T) {
@@ -61,3 +68,8 @@ func TestCustomerBuyCD(t *testing.T) {
 		})
 	})
 }
+
+//
+// func TestCustomerReviewsCD(t *testing.T) {
+//
+// }
