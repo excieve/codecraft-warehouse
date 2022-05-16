@@ -12,6 +12,15 @@ func (c *Cd) InStock() bool {
 	return c.stock > 0
 }
 
+func (c *Cd) Buy(payment Payment) bool {
+	if payment.IsComplete() {
+		c.stock--
+		return true
+	}
+
+	return false
+}
+
 func (w *Warehouse) Search(artist string, title string) []Cd {
 	var cds = make([]Cd, 0)
 
