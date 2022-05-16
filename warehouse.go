@@ -55,10 +55,10 @@ func NewCd(artist string, title string, stock int) *Cd {
 	}
 }
 
-func (w *Warehouse) Search(artist string, title string) []Cd {
+func (w Warehouse) Search(artist string, title string) []Cd {
 	var cds = make([]Cd, 0)
 
-	for _, cd := range *w {
+	for _, cd := range w {
 		if cd.Title == title && cd.Artist == artist {
 			cds = append(cds, cd)
 		}
@@ -67,7 +67,6 @@ func (w *Warehouse) Search(artist string, title string) []Cd {
 	return cds
 }
 
-func NewWarehouse(cds []Cd) *Warehouse {
-	warehouse := Warehouse(cds)
-	return &warehouse
+func NewWarehouse(cds []Cd) Warehouse {
+	return cds
 }
