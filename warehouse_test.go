@@ -18,7 +18,8 @@ func TestCustomerBuyCD(t *testing.T) {
 	})
 
 	t.Run("Customer finds one CD with artist 'Foo' and title 'Bar' that's not in stock", func(t *testing.T) {
-		warehouse := NewWarehouse([]Cd{{"Foo", "Bar", 0, []CdReview{}}})
+		fooCd := NewCd("Foo", "Bar", 0)
+		warehouse := NewWarehouse([]Cd{*fooCd})
 
 		assert.NotNil(t, warehouse)
 
@@ -41,7 +42,8 @@ func TestCustomerBuyCD(t *testing.T) {
 	})
 
 	t.Run("Customer finds one CD with artist 'Foo' and title 'Bar' that's in stock", func(t *testing.T) {
-		warehouse := NewWarehouse([]Cd{{"Foo", "Bar", 1, []CdReview{}}})
+		fooCd := NewCd("Foo", "Bar", 1)
+		warehouse := NewWarehouse([]Cd{*fooCd})
 
 		assert.NotNil(t, warehouse)
 

@@ -46,6 +46,15 @@ func (c *Cd) AddReview(rating int, comment string) bool {
 	return true
 }
 
+func NewCd(artist string, title string, stock int) *Cd {
+	return &Cd{
+		Artist:  artist,
+		Title:   title,
+		stock:   stock,
+		reviews: []CdReview{},
+	}
+}
+
 func (w *Warehouse) Search(artist string, title string) []Cd {
 	var cds = make([]Cd, 0)
 
