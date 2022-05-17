@@ -11,6 +11,14 @@ type MockCharts struct {
 	mock.Mock
 }
 
+func (m *MockCharts) GetLowestPrice(artist string, title string) float64 {
+	if artist == "Foo" && title == "Bar" {
+		return 18.0
+	}
+
+	return 0.0
+}
+
 func (m *MockCharts) IsTop100(artist, title string) bool {
 	return artist == "Foo" && title == "Bar"
 }
@@ -39,15 +47,21 @@ func TestCharts(t *testing.T) {
 		charts.AssertExpectations(t)
 	})
 
-	t.Run("A CD with artist 'Not' and title 'Top100' in not found in the charts Top100", func(t *testing.T) {
+	t.Run("A CD with artist 'Not' and title 'Top100' in not found in the charts Top100, original price is offered", func(t *testing.T) {
+		cd := NewCd("Not", "Top100", 3, 20.0)
+		assert.NotNil(t, cd)
+
 		charts := new(MockCharts)
 
-		assert.False(t, charts.IsTop100("Not", "Top100"))
+		assert.Equal(t, 20.0, cd.getFinalPrice(charts))
 	})
 
-	t.Run("A CD with artist 'Foo' and title 'Bar' is found in the charts Top100", func(t *testing.T) {
+	t.Run("A CD with artist 'Foo' and title 'Bar' is found in the charts Top100, offering a price of 17.0", func(t *testing.T) {
+		cd := NewCd("Foo", "Bar", 3, 20.0)
+		assert.NotNil(t, cd)
+
 		charts := new(MockCharts)
 
-		assert.True(t, charts.IsTop100("Foo", "Bar"))
+		assert.Equal(t, 17.0, cd.getFinalPrice(charts))
 	})
 }

@@ -48,6 +48,14 @@ func (c *Cd) AddStock(items int) int {
 	return c.stock
 }
 
+func (c *Cd) getFinalPrice(charts Charts) float64 {
+	if !charts.IsTop100(c.Artist, c.Title) {
+		return c.Price
+	}
+
+	return charts.GetLowestPrice(c.Artist, c.Title) - 1.0
+}
+
 func NewCd(artist string, title string, stock int, price float64) *Cd {
 	id := uuid.NewString()
 
