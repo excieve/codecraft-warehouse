@@ -34,7 +34,9 @@ func TestCustomerBuyCD(t *testing.T) {
 
 		t.Run("and fails to buy it", func(t *testing.T) {
 			customer := NewCustomer("tester")
-			payment := &SuccessfulPayment{}
+
+			payment := new(MockPayment)
+			payment.On("IsComplete", 20.0).Return(true)
 
 			assert.False(t, foundCd.Buy(customer, payment, nil))
 			assert.False(t, foundCd.InStock())
@@ -58,7 +60,9 @@ func TestCustomerBuyCD(t *testing.T) {
 
 		t.Run("and fails to buy it", func(t *testing.T) {
 			customer := NewCustomer("tester")
-			payment := &FailingPayment{}
+
+			payment := new(MockPayment)
+			payment.On("IsComplete", 20.0).Return(false)
 
 			assert.False(t, foundCd.Buy(customer, payment, nil))
 			assert.True(t, foundCd.InStock())
@@ -70,7 +74,9 @@ func TestCustomerBuyCD(t *testing.T) {
 
 		t.Run("and buys it", func(t *testing.T) {
 			customer := NewCustomer("tester")
-			payment := &SuccessfulPayment{}
+
+			payment := new(MockPayment)
+			payment.On("IsComplete", 20.0).Return(true)
 
 			assert.True(t, foundCd.Buy(customer, payment, nil))
 			assert.False(t, foundCd.InStock())
