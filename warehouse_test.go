@@ -12,9 +12,9 @@ func TestCustomerBuyCD(t *testing.T) {
 
 		assert.NotNil(t, warehouse)
 
-		cds := warehouse.Search("Foo", "Bar")
+		foundCd := warehouse.Search("Foo", "Bar")
 
-		assert.Equal(t, 0, len(cds))
+		assert.Nil(t, foundCd)
 	})
 
 	t.Run("Customer finds one CD with artist 'Foo' and title 'Bar' that's not in stock", func(t *testing.T) {
@@ -23,11 +23,9 @@ func TestCustomerBuyCD(t *testing.T) {
 
 		assert.NotNil(t, warehouse)
 
-		cds := warehouse.Search("Foo", "Bar")
+		foundCd := warehouse.Search("Foo", "Bar")
+		assert.NotNil(t, foundCd)
 
-		assert.Len(t, cds, 1)
-
-		foundCd := cds[0]
 		assert.Equal(t, "Foo", foundCd.Artist)
 		assert.Equal(t, "Bar", foundCd.Title)
 
@@ -48,9 +46,9 @@ func TestCustomerBuyCD(t *testing.T) {
 
 		assert.NotNil(t, warehouse)
 
-		cds := warehouse.Search("Foo", "Bar")
+		foundCd := warehouse.Search("Foo", "Bar")
+		assert.NotNil(t, foundCd)
 
-		foundCd := cds[0]
 		assert.Equal(t, "Foo", foundCd.Artist)
 		assert.Equal(t, "Bar", foundCd.Title)
 
