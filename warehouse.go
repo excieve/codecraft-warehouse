@@ -20,10 +20,6 @@ func (c *Cd) InStock() bool {
 	return c.stock > 0
 }
 
-type Charts interface {
-	Notify(artist, title string, items int) error
-}
-
 func (c *Cd) Buy(customer *Customer, payment Payment, charts Charts) bool {
 	if c.stock < 1 {
 		return false
