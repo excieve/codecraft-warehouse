@@ -94,3 +94,21 @@ func TestCustomerBuyCD(t *testing.T) {
 		})
 	})
 }
+
+func TestCharts(t *testing.T) {
+	t.Run("Customer buys a CD with artist 'Foo' and title 'Bar'", func(t *testing.T) {
+		cd := NewCd("Foo", "Bar", 3)
+		assert.NotNil(t, cd)
+
+		customer := NewCustomer("tester")
+		assert.NotNil(t, customer)
+
+		payment := &SuccessfulPayment{}
+
+		assert.True(t, cd.Buy(customer, payment))
+
+		t.Run("and charts are notified about the purchase", func(t *testing.T) {
+
+		})
+	})
+}
