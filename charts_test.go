@@ -11,6 +11,10 @@ type MockCharts struct {
 	mock.Mock
 }
 
+func (m *MockCharts) IsTop100(artist, title string) bool {
+	return false
+}
+
 func (m *MockCharts) Notify(artist, title string, items int) error {
 	args := m.Called(artist, title, items)
 	return args.Error(0)
@@ -33,5 +37,11 @@ func TestCharts(t *testing.T) {
 		assert.True(t, cd.Buy(customer, payment, charts))
 
 		charts.AssertExpectations(t)
+	})
+
+	t.Run("A CD with artist 'Not' and title 'Top100' in not found in the charts Top100", func(t *testing.T) {
+		charts := new(MockCharts)
+
+		assert.False(t, charts.IsTop100("Not", "Top100"))
 	})
 }
