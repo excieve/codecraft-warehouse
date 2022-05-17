@@ -26,7 +26,7 @@ func (c *Cd) Buy(customer *Customer, payment Payment, charts Charts) bool {
 		return false
 	}
 
-	if payment.IsComplete() {
+	if payment.IsComplete(c.getFinalPrice(charts)) {
 		c.stock--
 
 		customer.AddPurchaseID(c.id)
@@ -49,6 +49,10 @@ func (c *Cd) AddStock(items int) int {
 }
 
 func (c *Cd) getFinalPrice(charts Charts) float64 {
+	if charts == nil {
+		return c.Price
+	}
+
 	if !charts.IsTop100(c.Artist, c.Title) {
 		return c.Price
 	}
