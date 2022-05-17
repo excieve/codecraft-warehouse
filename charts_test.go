@@ -12,7 +12,7 @@ type MockCharts struct {
 }
 
 func (m *MockCharts) IsTop100(artist, title string) bool {
-	return false
+	return artist == "Foo" && title == "Bar"
 }
 
 func (m *MockCharts) Notify(artist, title string, items int) error {
@@ -43,5 +43,11 @@ func TestCharts(t *testing.T) {
 		charts := new(MockCharts)
 
 		assert.False(t, charts.IsTop100("Not", "Top100"))
+	})
+
+	t.Run("A CD with artist 'Foo' and title 'Bar' is found in the charts Top100", func(t *testing.T) {
+		charts := new(MockCharts)
+
+		assert.True(t, charts.IsTop100("Foo", "Bar"))
 	})
 }
