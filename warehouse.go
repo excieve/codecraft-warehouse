@@ -12,13 +12,8 @@ type Cd struct {
 
 	id      string
 	stock   int
-	reviews []CdReview
-}
 
-type CdReview struct {
-	Rating       int
-	Comment      string
-	CustomerName string
+	Reviews *CdReviews
 }
 
 func (c *Cd) InStock() bool {
@@ -41,38 +36,20 @@ func (c *Cd) Buy(customer *Customer, payment Payment) bool {
 	return false
 }
 
-func (c *Cd) AddReview(customer *Customer, rating int, comment string) bool {
-	if rating < 1 || rating > 10 {
-		return false
-	}
-
-	if !customer.HasPurchased(c.id) {
-		return false
-	}
-
-	review := CdReview{
-		Rating:       rating,
-		Comment:      comment,
-		CustomerName: customer.Name,
-	}
-
-	c.reviews = append(c.reviews, review)
-
-	return true
-}
-
 func (c *Cd) AddStock(items int) int {
 	c.stock += items
 	return c.stock
 }
 
 func NewCd(artist string, title string, stock int) *Cd {
+	id := uuid.NewString()
+
 	return &Cd{
 		Artist:  artist,
 		Title:   title,
-		id:      uuid.NewString(),
+		id:      id,
 		stock:   stock,
-		reviews: []CdReview{},
+		Reviews: NewCdReviews(id),
 	}
 }
 

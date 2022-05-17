@@ -62,7 +62,7 @@ func TestCustomerBuyCD(t *testing.T) {
 			assert.True(t, foundCd.InStock())
 
 			t.Run("failing to leave a review", func(t *testing.T) {
-				assert.False(t, foundCd.AddReview(customer, 1, "awful"))
+				assert.False(t, foundCd.Reviews.AddReview(customer, 1, "awful"))
 			})
 		})
 
@@ -74,17 +74,17 @@ func TestCustomerBuyCD(t *testing.T) {
 			assert.False(t, foundCd.InStock())
 
 			t.Run("failing to leave a review", func(t *testing.T) {
-				assert.False(t, foundCd.AddReview(customer, 15, "terrific"))
+				assert.False(t, foundCd.Reviews.AddReview(customer, 15, "terrific"))
 			})
 
 			t.Run("leaving a review successfully", func(t *testing.T) {
-				assert.True(t, foundCd.AddReview(customer, 2, "not great"))
+				assert.True(t, foundCd.Reviews.AddReview(customer, 2, "not great"))
 
-				assert.Len(t, foundCd.reviews, 1)
+				assert.Len(t, foundCd.Reviews.reviews, 1)
 
-				assert.Equal(t, 2, foundCd.reviews[0].Rating)
-				assert.Equal(t, "not great", foundCd.reviews[0].Comment)
-				assert.Equal(t, customer.Name, foundCd.reviews[0].CustomerName)
+				assert.Equal(t, 2, foundCd.Reviews.reviews[0].Rating)
+				assert.Equal(t, "not great", foundCd.Reviews.reviews[0].Comment)
+				assert.Equal(t, customer.Name, foundCd.Reviews.reviews[0].CustomerName)
 			})
 
 			t.Run("label adds an item to the stock", func(t *testing.T) {
