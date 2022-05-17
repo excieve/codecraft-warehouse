@@ -42,15 +42,6 @@ func (m *MockCharts) Notify(artist, title string, items int) error {
 	return args.Error(0)
 }
 
-type MockPayment struct {
-	mock.Mock
-}
-
-func (m *MockPayment) IsComplete(amount float64) bool {
-	args := m.Called(amount)
-	return args.Bool(0)
-}
-
 func TestCharts(t *testing.T) {
 	t.Run("Customer buys a CD with artist 'Foo' and title 'Bar' and charts are notified about the purchase", func(t *testing.T) {
 		cd := NewCd("Foo", "Bar", 3, 20.0)
