@@ -73,15 +73,16 @@ func TestCharts(t *testing.T) {
 		assert.Equal(t, 20.0, cd.getFinalPrice(charts))
 	})
 
-	t.Run("A CD with artist 'Foo' and title 'Bar' is found in the charts Top100, offering a price of 17.0", func(t *testing.T) {
-		cd := NewCd("Foo", "Bar", 3, 20.0)
+	t.Run("A CD with artist 'Foo' and title 'Baz' is found in the charts Top100, offering a price of 17.0", func(t *testing.T) {
+		cd := NewCd("Foo", "Baz", 3, 20.0)
 		assert.NotNil(t, cd)
 
 		top100 := []*Cd{
 			NewCd("Foo", "Bar", 0, 18.0),
+			NewCd("Foo", "Baz", 0, 19.0),
 		}
 		charts := NewMockCharts(top100)
 
-		assert.Equal(t, 17.0, cd.getFinalPrice(charts))
+		assert.Equal(t, 18.0, cd.getFinalPrice(charts))
 	})
 }
