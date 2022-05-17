@@ -9,18 +9,32 @@ import (
 
 type MockCharts struct {
 	mock.Mock
+
+	top100 []*Cd
+}
+
+func NewMockCharts(top100 []*Cd) *MockCharts {
+	return &MockCharts{top100: top100}
 }
 
 func (m *MockCharts) GetLowestPrice(artist string, title string) float64 {
-	if artist == "Foo" && title == "Bar" {
-		return 18.0
+	for _, cd := range m.top100 {
+		if cd.Artist == artist && cd.Title == title {
+			return cd.Price
+		}
 	}
 
 	return 0.0
 }
 
 func (m *MockCharts) IsTop100(artist, title string) bool {
-	return artist == "Foo" && title == "Bar"
+	for _, cd := range m.top100 {
+		if cd.Artist == artist && cd.Title == title {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (m *MockCharts) Notify(artist, title string, items int) error {
@@ -38,7 +52,7 @@ func TestCharts(t *testing.T) {
 
 		payment := &SuccessfulPayment{}
 
-		charts := new(MockCharts)
+		charts := NewMockCharts([]*Cd{})
 
 		charts.On("Notify", "Foo", "Bar", 1).Return(nil)
 
@@ -51,7 +65,10 @@ func TestCharts(t *testing.T) {
 		cd := NewCd("Not", "Top100", 3, 20.0)
 		assert.NotNil(t, cd)
 
-		charts := new(MockCharts)
+		top100 := []*Cd{
+			NewCd("Foo", "Bar", 0, 18.0),
+		}
+		charts := NewMockCharts(top100)
 
 		assert.Equal(t, 20.0, cd.getFinalPrice(charts))
 	})
@@ -60,7 +77,10 @@ func TestCharts(t *testing.T) {
 		cd := NewCd("Foo", "Bar", 3, 20.0)
 		assert.NotNil(t, cd)
 
-		charts := new(MockCharts)
+		top100 := []*Cd{
+			NewCd("Foo", "Bar", 0, 18.0),
+		}
+		charts := NewMockCharts(top100)
 
 		assert.Equal(t, 17.0, cd.getFinalPrice(charts))
 	})
