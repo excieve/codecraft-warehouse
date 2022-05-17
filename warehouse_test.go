@@ -86,6 +86,11 @@ func TestCustomerBuyCD(t *testing.T) {
 				assert.Equal(t, "not great", foundCd.reviews[0].Comment)
 				assert.Equal(t, customer.Name, foundCd.reviews[0].CustomerName)
 			})
+
+			t.Run("label adds an item to the stock", func(t *testing.T) {
+				assert.Equal(t, 2, foundCd.AddStock(2))
+				assert.True(t, foundCd.InStock())
+			})
 		})
 	})
 }

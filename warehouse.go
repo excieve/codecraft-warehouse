@@ -61,6 +61,11 @@ func (c *Cd) AddReview(customer *Customer, rating int, comment string) bool {
 	return true
 }
 
+func (c *Cd) AddStock(items int) int {
+	c.stock += items
+	return c.stock
+}
+
 func NewCd(artist string, title string, stock int) *Cd {
 	return &Cd{
 		Artist:  artist,
