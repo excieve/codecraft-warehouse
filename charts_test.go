@@ -18,7 +18,7 @@ func (m *MockCharts) Notify(artist, title string, items int) error {
 
 func TestCharts(t *testing.T) {
 	t.Run("Customer buys a CD with artist 'Foo' and title 'Bar' and charts are notified about the purchase", func(t *testing.T) {
-		cd := NewCd("Foo", "Bar", 3)
+		cd := NewCd("Foo", "Bar", 3, 20.0)
 		assert.NotNil(t, cd)
 
 		customer := NewCustomer("tester")

@@ -18,7 +18,7 @@ func TestCustomerBuyCD(t *testing.T) {
 	})
 
 	t.Run("Customer finds one CD with artist 'Foo' and title 'Bar' that's not in stock", func(t *testing.T) {
-		fooCd := NewCd("Foo", "Bar", 0)
+		fooCd := NewCd("Foo", "Bar", 0, 20.0)
 		warehouse := NewWarehouse([]Cd{*fooCd})
 
 		assert.NotNil(t, warehouse)
@@ -28,6 +28,7 @@ func TestCustomerBuyCD(t *testing.T) {
 
 		assert.Equal(t, "Foo", foundCd.Artist)
 		assert.Equal(t, "Bar", foundCd.Title)
+		assert.Equal(t, 20.0, foundCd.Price)
 
 		assert.False(t, foundCd.InStock())
 
@@ -41,7 +42,7 @@ func TestCustomerBuyCD(t *testing.T) {
 	})
 
 	t.Run("Customer finds one CD with artist 'Foo' and title 'Bar' that's in stock", func(t *testing.T) {
-		fooCd := NewCd("Foo", "Bar", 1)
+		fooCd := NewCd("Foo", "Bar", 1, 20.0)
 		warehouse := NewWarehouse([]Cd{*fooCd})
 
 		assert.NotNil(t, warehouse)
@@ -51,6 +52,7 @@ func TestCustomerBuyCD(t *testing.T) {
 
 		assert.Equal(t, "Foo", foundCd.Artist)
 		assert.Equal(t, "Bar", foundCd.Title)
+		assert.Equal(t, 20.0, foundCd.Price)
 
 		assert.True(t, foundCd.InStock())
 

@@ -14,6 +14,7 @@ type Cd struct {
 	stock int
 
 	Reviews *CdReviews
+	Price   float64
 }
 
 func (c *Cd) InStock() bool {
@@ -47,7 +48,7 @@ func (c *Cd) AddStock(items int) int {
 	return c.stock
 }
 
-func NewCd(artist string, title string, stock int) *Cd {
+func NewCd(artist string, title string, stock int, price float64) *Cd {
 	id := uuid.NewString()
 
 	return &Cd{
@@ -56,6 +57,7 @@ func NewCd(artist string, title string, stock int) *Cd {
 		id:      id,
 		stock:   stock,
 		Reviews: NewCdReviews(id),
+		Price:   price,
 	}
 }
 
