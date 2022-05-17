@@ -10,8 +10,8 @@ type Cd struct {
 	Artist string
 	Title  string
 
-	id      string
-	stock   int
+	id    string
+	stock int
 
 	Reviews *CdReviews
 }
@@ -20,7 +20,11 @@ func (c *Cd) InStock() bool {
 	return c.stock > 0
 }
 
-func (c *Cd) Buy(customer *Customer, payment Payment) bool {
+type Charts interface {
+	Notify(artist, title string, items int) error
+}
+
+func (c *Cd) Buy(customer *Customer, payment Payment, charts Charts) bool {
 	if c.stock < 1 {
 		return false
 	}
@@ -29,6 +33,12 @@ func (c *Cd) Buy(customer *Customer, payment Payment) bool {
 		c.stock--
 
 		customer.AddPurchaseID(c.id)
+
+		if charts != nil {
+			if err := charts.Notify(c.Artist, c.Title, 1); err != nil {
+				return false
+			}
+		}
 
 		return true
 	}

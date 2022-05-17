@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestCustomerBuyCD(t *testing.T) {
@@ -35,7 +36,7 @@ func TestCustomerBuyCD(t *testing.T) {
 			customer := NewCustomer("tester")
 			payment := &SuccessfulPayment{}
 
-			assert.False(t, foundCd.Buy(customer, payment))
+			assert.False(t, foundCd.Buy(customer, payment, nil))
 			assert.False(t, foundCd.InStock())
 		})
 	})
@@ -58,7 +59,7 @@ func TestCustomerBuyCD(t *testing.T) {
 			customer := NewCustomer("tester")
 			payment := &FailingPayment{}
 
-			assert.False(t, foundCd.Buy(customer, payment))
+			assert.False(t, foundCd.Buy(customer, payment, nil))
 			assert.True(t, foundCd.InStock())
 
 			t.Run("failing to leave a review", func(t *testing.T) {
@@ -70,7 +71,7 @@ func TestCustomerBuyCD(t *testing.T) {
 			customer := NewCustomer("tester")
 			payment := &SuccessfulPayment{}
 
-			assert.True(t, foundCd.Buy(customer, payment))
+			assert.True(t, foundCd.Buy(customer, payment, nil))
 			assert.False(t, foundCd.InStock())
 
 			t.Run("failing to leave a review", func(t *testing.T) {
@@ -95,8 +96,17 @@ func TestCustomerBuyCD(t *testing.T) {
 	})
 }
 
+type MockCharts struct {
+	mock.Mock
+}
+
+func (m *MockCharts) Notify(artist, title string, items int) error {
+	args := m.Called(artist, title, items)
+	return args.Error(0)
+}
+
 func TestCharts(t *testing.T) {
-	t.Run("Customer buys a CD with artist 'Foo' and title 'Bar'", func(t *testing.T) {
+	t.Run("Customer buys a CD with artist 'Foo' and title 'Bar' and charts are notified about the purchase", func(t *testing.T) {
 		cd := NewCd("Foo", "Bar", 3)
 		assert.NotNil(t, cd)
 
@@ -105,10 +115,12 @@ func TestCharts(t *testing.T) {
 
 		payment := &SuccessfulPayment{}
 
-		assert.True(t, cd.Buy(customer, payment))
+		charts := new(MockCharts)
 
-		t.Run("and charts are notified about the purchase", func(t *testing.T) {
+		charts.On("Notify", "Foo", "Bar", 1).Return(nil)
 
-		})
+		assert.True(t, cd.Buy(customer, payment, charts))
+
+		charts.AssertExpectations(t)
 	})
 }
